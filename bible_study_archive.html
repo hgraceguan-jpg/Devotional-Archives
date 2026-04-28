@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Friday Devotion · Bible Study Archive</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-top:#EEF2FC;
+  --bg-bot:#DDE6F8;
+  --navy:#0F2058;
+  --indigo:#3250A0;
+  --indigo2:#5068B8;
+  --gold:#BC8E14;
+  --gold2:#E1B437;
+  --white:#FFFFFF;
+  --border:#D0DCEF;
+  --border2:#C0CFEA;
+  --text:#0F2058;
+  --text2:#3A52A0;
+  --text3:#6878B0;
+  --row-hover:rgba(188,142,20,.06);
+  --row-open:rgba(188,142,20,.04);
+  --expand-bg:#F6F9FF;
+  --radius:12px;
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  background:linear-gradient(160deg,var(--bg-top) 0%,var(--bg-bot) 100%);
+  background-attachment:fixed;
+  color:var(--text);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Gold accent bar ── */
+.top-bar{height:7px;background:linear-gradient(90deg,var(--gold) 0%,var(--gold2) 50%,var(--gold) 100%)}
+
+/* ── Header ── */
+header{
+  background:rgba(255,255,255,.60);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(188,142,20,.18);
+  padding:18px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+  position:sticky;top:7px;z-index:100;
+}
+.h-left{display:flex;align-items:center;gap:12px}
+.h-logo{
+  width:36px;height:36px;border-radius:9px;
+  background:var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.68rem;font-weight:900;color:var(--gold2);letter-spacing:.04em;
+}
+.h-info h1{font-size:.98rem;font-weight:800;color:var(--navy);line-height:1.2}
+.h-info p{font-size:.72rem;color:var(--text3);margin-top:1px}
+.h-badge{
+  font-size:.70rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:5px 13px;border-radius:20px;
+  background:rgba(188,142,20,.10);
+  border:1px solid rgba(188,142,20,.28);
+  color:var(--gold);
+}
+
+/* ── Page container ── */
+.page{max-width:1000px;margin:0 auto;padding:0 24px}
+
+/* ── Intro ── */
+.intro{padding:44px 0 28px;text-align:center}
+.intro-tag{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:.75rem;color:var(--text3);
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.60);
+  padding:4px 14px;border-radius:20px;margin-bottom:18px;
+}
+.live{width:6px;height:6px;border-radius:50%;background:#22C55E;
+  animation:blink 2.4s ease-in-out infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.intro h2{
+  font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;
+  color:var(--navy);letter-spacing:-.02em;margin-bottom:8px;
+}
+.intro h2 span{color:var(--navy)}
+.intro p{font-size:.9rem;color:var(--text2);line-height:1.6;white-space:nowrap;margin:0 auto}
+
+/* ── Stats strip ── */
+.stats-strip{
+  display:flex;gap:0;justify-content:center;
+  background:rgba(255,255,255,.65);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  margin-bottom:28px;
+  width:fit-content;margin-left:auto;margin-right:auto;
+}
+.ss{padding:12px 26px;border-right:1px solid var(--border);text-align:center}
+.ss:last-child{border-right:none}
+.ss-n{font-size:1.2rem;font-weight:800;color:var(--gold)}
+.ss-l{font-size:.62rem;text-transform:uppercase;letter-spacing:.09em;color:var(--text3);margin-top:1px}
+
+/* ── Controls ── */
+.ctrl{
+  display:flex;gap:9px;align-items:center;
+  flex-wrap:wrap;margin-bottom:16px;
+}
+.ctrl-search{flex:1;min-width:180px;position:relative}
+.ctrl-search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);
+  color:var(--text3);pointer-events:none}
+#search{
+  width:100%;padding:9px 12px 9px 34px;
+  background:rgba(255,255,255,.80);
+  border:1.5px solid var(--border);border-radius:8px;
+  color:var(--navy);font-size:.88rem;font-family:inherit;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+#search::placeholder{color:var(--text3)}
+#search:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(188,142,20,.14);background:#fff}
+select{
+  padding:9px 30px 9px 12px;
+  background:rgba(255,255,255,.80) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%233250A0'/%3E%3C/svg%3E") no-repeat right 10px center;
+  background-size:9px;
+  border:1.5px solid var(--border);border-radius:8px;
+  color:var(--navy);font-size:.86rem;font-family:inherit;font-weight:600;
+  cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;
+  transition:border-color .2s,box-shadow .2s;min-width:120px;
+}
+select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(188,142,20,.14);background-color:#fff}
+
+/* Result line */
+.result-line{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:12px;flex-wrap:wrap;gap:6px;
+}
+.result-line span{font-size:.80rem;color:var(--text3)}
+.result-line strong{color:var(--navy)}
+.clear-btn{
+  font-size:.76rem;color:var(--indigo2);background:none;border:none;
+  cursor:pointer;text-decoration:underline;font-family:inherit;
+}
+.clear-btn:hover{color:var(--gold)}
+
+/* ── TABLE ── */
+.table-wrap{
+  background:var(--white);
+  border:1.5px solid rgba(188,142,20,.22);
+  border-radius:var(--radius);
+  box-shadow:0 4px 24px rgba(15,32,88,.09);
+  overflow:hidden;
+  margin-bottom:48px;
+}
+
+/* Table header */
+.t-head{
+  display:grid;
+  grid-template-columns:110px 160px 1fr 1fr 36px;
+  gap:0;
+  background:var(--navy);
+  padding:12px 16px;
+}
+.t-head span{
+  font-size:.68rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(255,255,255,.70);
+}
+.t-head span:last-child{text-align:center}
+
+/* Empty state */
+.empty-row{
+  padding:56px 24px;text-align:center;
+  font-size:.88rem;color:var(--text3);
+}
+.empty-row p{margin-top:6px;font-size:.82rem}
+
+/* Each session row */
+.session{border-bottom:1px solid var(--border)}
+.session:last-child{border-bottom:none}
+
+.session-row{
+  display:grid;
+  grid-template-columns:110px 160px 1fr 1fr 36px;
+  gap:0;
+  padding:14px 16px;
+  cursor:pointer;
+  align-items:start;
+  transition:background .15s;
+  position:relative;
+}
+.session-row:hover{background:var(--row-hover)}
+.session.open .session-row{
+  background:var(--row-open);
+  border-left:3px solid var(--gold);
+  padding-left:13px;
+}
+
+.col-date{font-size:.78rem;color:var(--text3);font-weight:500;padding-right:8px;padding-top:1px}
+.col-passage{
+  font-size:.82rem;font-weight:700;color:var(--gold);
+  font-family:'Menlo','Consolas',monospace;letter-spacing:.02em;
+  padding-right:12px;padding-top:1px;
+}
+.col-title{font-size:.88rem;font-weight:700;color:var(--navy);padding-right:12px;line-height:1.35}
+.col-idea{font-size:.84rem;color:var(--text2);line-height:1.45;padding-right:12px}
+.col-toggle{
+  display:flex;align-items:flex-start;justify-content:center;padding-top:4px;
+}
+.toggle-icon{
+  width:22px;height:22px;border-radius:50%;
+  background:rgba(188,142,20,.12);
+  border:1px solid rgba(188,142,20,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.65rem;color:var(--gold);font-weight:700;
+  transition:transform .25s,background .15s;
+  flex-shrink:0;
+}
+.session.open .toggle-icon{
+  transform:rotate(180deg);
+  background:var(--gold);color:var(--white);
+}
+
+/* Expanded content */
+.session-expand{
+  display:none;
+  padding:0 16px 20px 16px;
+  border-top:1px dashed var(--border2);
+  margin-top:0;
+  background:var(--expand-bg);
+  animation:fadeIn .2s ease;
+}
+.session.open .session-expand{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+.ex-inner{
+  padding-top:18px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+@media(max-width:640px){.ex-inner{grid-template-columns:1fr}}
+
+.ex-section-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.10em;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:9px;
+  display:flex;align-items:center;gap:6px;
+}
+.ex-section-label::after{
+  content:'';flex:1;height:1px;background:rgba(188,142,20,.25);
+}
+
+.ex-verse{
+  font-size:.88rem;color:var(--text2);
+  font-style:italic;line-height:1.75;
+  border-left:3px solid var(--gold);
+  padding:10px 14px;
+  background:rgba(255,255,255,.65);
+  border-radius:0 6px 6px 0;
+}
+
+.ex-points{list-style:none;margin-top:0}
+.ex-points li{
+  font-size:.84rem;color:var(--text2);
+  padding:7px 0 7px 18px;
+  border-bottom:1px solid var(--border);
+  position:relative;line-height:1.5;
+}
+.ex-points li:last-child{border-bottom:none}
+.ex-points li::before{
+  content:'›';position:absolute;left:4px;
+  color:var(--gold);font-weight:800;font-size:1rem;
+  top:6px;
+}
+
+.ex-actions{
+  margin-top:14px;padding-top:12px;
+  border-top:1px solid var(--border);
+  display:flex;gap:8px;align-items:center;
+}
+.copy-btn{
+  font-size:.76rem;color:var(--text3);
+  background:rgba(255,255,255,.70);
+  border:1px solid var(--border2);border-radius:6px;
+  padding:5px 12px;cursor:pointer;font-family:inherit;
+  transition:all .15s;
+}
+.copy-btn:hover{border-color:var(--gold);color:var(--gold)}
+.close-btn{
+  font-size:.76rem;color:var(--indigo2);background:none;
+  border:none;cursor:pointer;font-family:inherit;
+  margin-left:auto;text-decoration:underline;
+}
+.close-btn:hover{color:var(--gold)}
+
+/* ── Footer ── */
+footer{
+  background:rgba(255,255,255,.50);
+  border-top:1px solid rgba(188,142,20,.15);
+  padding:22px 32px;text-align:center;
+}
+.footer-logos img{height:32px;object-fit:contain;margin-bottom:12px}
+footer p{font-size:.74rem;color:var(--text3);line-height:1.6}
+footer strong{color:var(--navy)}
+
+/* ── Toast ── */
+#toast{
+  position:fixed;bottom:22px;left:50%;
+  transform:translateX(-50%) translateY(60px);opacity:0;
+  z-index:999;background:var(--navy);color:var(--white);
+  border-radius:30px;padding:9px 20px;font-size:.8rem;
+  box-shadow:0 6px 24px rgba(15,32,88,.25);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;
+  pointer-events:none;
+}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* ── Responsive ── */
+@media(max-width:700px){
+  header{padding:14px 16px}
+  .page{padding:0 14px}
+  .intro{padding:32px 0 22px}
+  .t-head{display:none}
+  .session-row{
+    grid-template-columns:1fr 36px;
+    grid-template-rows:auto auto auto;
+    gap:3px;
+  }
+  .col-date{grid-column:1;font-size:.72rem}
+  .col-passage{grid-column:1;font-size:.78rem}
+  .col-title{grid-column:1;font-size:.9rem;font-weight:800}
+  .col-idea{grid-column:1;font-size:.82rem;display:none}
+  .col-toggle{grid-column:2;grid-row:1/4;align-items:flex-start}
+  .stats-strip{width:100%}
+  .ss{flex:1}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="h-left">
+    <div class="h-logo">FD</div>
+    <div class="h-info">
+      <h1>Friday Devotion</h1>
+      <p>Bible Study Archive</p>
+    </div>
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- INTRO -->
+  <div class="intro">
+    <div class="intro-tag"><span class="live"></span>Everyone is Welcome · Come as You Are!</div>
+    <h2>FRIDAY <span>DEVOTION</span></h2>
+    <p>Click any session below to read the Bible verse and discussion points.</p>
+    <div class="stats-strip" style="margin-top:22px">
+      <div class="ss"><div class="ss-n" style="color:var(--navy)">Friday</div><div class="ss-l">Every Week</div></div>
+      <div class="ss"><div class="ss-n" style="color:var(--navy)">8:00 AM</div><div class="ss-l">Start Time</div></div>
+      <div class="ss">
+        <div class="ss-n" style="color:var(--navy)">MS Teams</div>
+        <div class="ss-l">
+          <a href="https://bit.ly/Friday_Devotion" target="_blank"
+             style="color:var(--text3);text-decoration:none;font-size:.62rem;
+                    letter-spacing:.04em;">bit.ly/Friday_Devotion</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="ctrl">
+    <div class="ctrl-search">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="search" placeholder="Search topics, passages, or keywords…" autocomplete="off">
+    </div>
+    <select id="sel-year">
+      <option value="all">All Years</option>
+      <option value="2026">2026</option>
+      <option value="2025">2025</option>
+    </select>
+    <select id="sel-month">
+      <option value="all">All Months</option>
+      <option value="April">April</option>
+      <option value="March">March</option>
+      <option value="February">February</option>
+      <option value="November">November</option>
+      <option value="October">October</option>
+      <option value="September">September</option>
+      <option value="August">August</option>
+      <option value="July">July</option>
+    </select>
+  </div>
+
+  <div class="result-line">
+    <span id="js-count"><strong>14</strong> sessions</span>
+    <button class="clear-btn" onclick="clearFilters()">Clear filters</button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <div class="t-head">
+      <span>Date</span>
+      <span>Passage</span>
+      <span>Title</span>
+      <span>Central Idea</span>
+      <span>▾</span>
+    </div>
+    <div id="list"></div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logos">
+    <img src="COMPANY LOGO ICC,API,KASA,DIMENSION.png"
+         alt="ICC · API · KASA · DIMENSION"
+         onerror="this.style.display='none'">
+  </div>
+  <p>Friday Devotion · Every Friday at 08:00 AM – 09:00 AM via Microsoft Teams<br>
+  <a href="https://bit.ly/Friday_Devotion" target="_blank"
+     style="color:var(--gold);font-size:.76rem;text-decoration:none;">https://bit.ly/Friday_Devotion</a></p>
+</footer>
+
+<div id="toast">📋 Verse copied to clipboard!</div>
+
+<script>
+// ── DATA ──
+const DATA = [
+  {n:"14",date:"24 Apr 2026",month:"April",year:"2026",
+   passage:"Psalm 1",
+   title:"Blessed Is the One",
+   idea:"Two ways of living — one rooted in God's Word, the other shaped by the world.",
+   verse:'"Blessed is the one who does not walk in step with the wicked or stand in the way that sinners take or sit in the company of mockers, but whose delight is in the law of the Lord, and who meditates on his law day and night. That person is like a tree planted by streams of water, which yields its fruit in season and whose leaf does not wither — whatever they do prospers. Not so the wicked! They are like chaff that the wind blows away. Therefore the wicked will not stand in the judgment, nor sinners in the assembly of the righteous. For the Lord watches over the way of the righteous, but the way of the wicked leads to destruction."',
+   points:["The power of what we choose to meditate on daily","Two paths: the righteous vs. the way of the wicked","How delight in Scripture produces lasting fruit in our lives"]},
+
+  {n:"13",date:"17 Apr 2026",month:"April",year:"2026",
+   passage:"Psalm 23",
+   title:"The Lord Is My Shepherd",
+   idea:"God provides, protects, and guides — even through the darkest valleys.",
+   verse:'"The Lord is my shepherd, I lack nothing. He makes me lie down in green pastures, he leads me beside quiet waters, he refreshes my soul. He guides me along the right paths for his name\'s sake. Even though I walk through the darkest valley, I will fear no evil, for you are with me; your rod and your staff, they comfort me. You prepare a table before me in the presence of my enemies. You anoint my head with oil; my cup overflows. Surely your goodness and love will follow me all the days of my life, and I will dwell in the house of the Lord forever."',
+   points:["What it means that God is our shepherd — not just our guide","The valley of the shadow: how God walks with us in suffering","Goodness and mercy following us — past, present, and future"]},
+
+  {n:"12",date:"27 Mar 2026",month:"March",year:"2026",
+   passage:"Psalm 32",
+   title:"The Joy of Forgiveness",
+   idea:"Unconfessed sin is exhausting. Confession opens the door to restoration.",
+   verse:'"Blessed is the one whose transgressions are forgiven, whose sins are covered. Blessed is the one whose sin the Lord does not count against them and in whose spirit is no deceit. When I kept silent, my bones wasted away through my groaning all day long… Then I acknowledged my sin to you and did not cover up my iniquity. I said, \'I will confess my transgressions to the Lord.\' And you forgave the guilt of my sin."',
+   points:["The physical and spiritual burden of carrying unconfessed guilt","Why hiding sin costs us far more than confessing it","The blessing and lightness that follows true, honest repentance"]},
+
+  {n:"11",date:"20 Feb 2026",month:"February",year:"2026",
+   passage:"Jeremiah 29",
+   title:"Plans to Give You Hope and a Future",
+   idea:"God calls us to flourish even in exile — His plans are not derailed by our detours.",
+   verse:'"This is what the Lord says: \"When seventy years are completed for Babylon, I will come to you and fulfill my good promise to bring you back to this place. For I know the plans I have for you,\" declares the Lord, \"plans to prosper you and not to harm you, plans to give you hope and a future. Then you will call on me and come and pray to me, and I will listen to you.\""',
+   points:["Context: these words were written to people in painful, unwanted exile","God's instruction to bloom where they were planted — build, plant, pray, seek peace","His plans are not derailed by our detours or difficult circumstances"]},
+
+  {n:"10",date:"13 Feb 2026",month:"February",year:"2026",
+   passage:"1 Corinthians 13",
+   title:"Love Cannot Be Anchored in Emotions",
+   idea:"Love rooted only in feeling will eventually fail. True love is a covenant choice.",
+   verse:'"Love is patient, love is kind. It does not envy, it does not boast, it is not proud. It does not dishonour others, it is not self-seeking, it is not easily angered, it keeps no record of wrongs. Love does not delight in evil but rejoices with the truth. It always protects, always trusts, always hopes, always perseveres. Love never fails."',
+   points:["The difference between love as a feeling vs. love as a daily commitment","Why love anchored only in emotions will collapse over time","How 1 Corinthians 13 reshapes our relationships — at home and at work"]},
+
+  {n:"09",date:"14 Nov 2025",month:"November",year:"2025",
+   passage:"Luke 6:36–42",
+   title:"Be Merciful, Not Judgmental",
+   idea:"Mercy is our calling. Judgment belongs to God — not to us.",
+   verse:'"Be merciful, just as your Father is merciful. Do not judge, and you will not be judged. Do not condemn, and you will not be condemned. Forgive, and you will be forgiven. Give, and it will be given to you… For with the measure you use, it will be measured to you. Why do you look at the speck of sawdust in your brother\'s eye and pay no attention to the plank in your own eye?"',
+   points:["Mercy as a direct reflection of God's character toward us","The plank and the speck: self-examination must come before correction","A generous, non-judgmental heart creates a healthier community"]},
+
+  {n:"08",date:"07 Nov 2025",month:"November",year:"2025",
+   passage:"Mark 4:35–41",
+   title:"Peace, Be Still",
+   idea:"Jesus is present in our storms — and His word is enough to calm them.",
+   verse:'"A furious squall came up, and the waves broke over the boat, so that it was nearly swamped. Jesus was in the stern, sleeping on a cushion. The disciples woke him and said to him, \"Teacher, don\'t you care if we drown?\" He got up, rebuked the wind and said to the waves, \"Quiet! Be still!\" Then the wind died down and it was completely calm. He said to his disciples, \"Why are you so afraid? Do you still have no faith?\""',
+   points:["Jesus was present in the storm even when He seemed asleep","The disciples had evidence of who He was — and still panicked","Faith is not the absence of fear; it is choosing trust in the middle of it"]},
+
+  {n:"07",date:"17 Oct 2025",month:"October",year:"2025",
+   passage:"Romans 3:9–12",
+   title:"No One Is Righteous",
+   idea:"All have fallen short — the ground is level at the foot of the cross.",
+   verse:'"What shall we conclude then? Do we have any advantage? Not at all! For we have already made the charge that Jews and Gentiles alike are all under the power of sin. As it is written: \"There is no one righteous, not even one; there is no one who understands; there is no one who seeks God. All have turned away, they have together become worthless; there is no one who does good, not even one.\""',
+   points:["Paul quotes Psalm 14 — universal sinfulness is not a new diagnosis","The equal standing of all people before God removes all basis for pride","Recognising our own sinfulness softens how we view and treat others"]},
+
+  {n:"06",date:"10 Oct 2025",month:"October",year:"2025",
+   passage:"Luke 10:25–37",
+   title:"Who Is My Neighbor?",
+   idea:"Love has no boundaries — and Jesus asks us to be a neighbor, not just have one.",
+   verse:'"On one occasion an expert in the law stood up to test Jesus. \"Teacher,\" he asked, \"what must I do to inherit eternal life?\" He answered: \'Love the Lord your God with all your heart and with all your soul and with all your strength and with all your mind\'; and \'Love your neighbor as yourself.\' Jesus replied, \"Do this and you will live.\" But he wanted to justify himself, so he asked Jesus, \"And who is my neighbor?\" … A Samaritan, as he traveled, came where the man was; and when he saw him, he took pity on him. He bandaged his wounds and brought him to an inn. \"Which of these three do you think was a neighbor to the man who fell into the hands of robbers?\" \"The one who had mercy on him.\" Jesus told him, \"Go and do likewise.\""',
+   points:["Two religious men passed by — duty can blind us to real need beside us","The Samaritan crossed deep racial and cultural lines to show love","Jesus reframes the question: not 'Who is my neighbor?' but 'To whom will I be one?'"]},
+
+  {n:"05",date:"03 Oct 2025",month:"October",year:"2025",
+   passage:"Matthew 18:21",
+   title:"Forgive Seventy Times Seven",
+   idea:"Jesus didn't give a higher limit — He abolished counting altogether.",
+   verse:'"Then Peter came to Jesus and asked, \"Lord, how many times shall I forgive my brother or sister who sins against me? Up to seven times?\" Jesus answered, \"I tell you, not seven times, but seventy-seven times. Therefore, the kingdom of heaven is like a king who wanted to settle accounts with his servants.\""',
+   points:["Peter's offer was generous — seven times exceeded the rabbi's standard of three","Jesus's answer 'seventy-seven' means: stop keeping score entirely","We forgive freely because we ourselves have been forgiven an unpayable debt"]},
+
+  {n:"04",date:"26 Sep 2025",month:"September",year:"2025",
+   passage:"John 1:1–14",
+   title:"The Word Made Flesh",
+   idea:"The eternal God stepped into human history — Emmanuel, God with us.",
+   verse:'"In the beginning was the Word, and the Word was with God, and the Word was God. He was with God in the beginning. Through him all things were made; without him nothing was made that has been made. In him was life, and that life was the light of all mankind… The Word became flesh and made his dwelling among us. We have seen his glory, the glory of the one and only Son, who came from the Father, full of grace and truth."',
+   points:["Christ was not created — He existed before all creation, with God, as God","'Dwelt among us' literally means 'tabernacled' — God pitching His tent with us","Full of grace and truth: not one without the other — both together, always"]},
+
+  {n:"03",date:"22 Aug 2025",month:"August",year:"2025",
+   passage:"Genesis 29:31",
+   title:"Seen by God",
+   idea:"Leah was overlooked by her husband — but not by God. He sees the forgotten.",
+   verse:'"When the Lord saw that Leah was not loved, he enabled her to conceive, but Rachel remained childless. Leah became pregnant and gave birth to a son. She named him Reuben, for she said, \"It is because the Lord has seen my misery. Surely my husband will love me now.\""',
+   points:["God's sight is not like ours — He notices those the world overlooks","Leah's story shows a slow journey from seeking human approval to resting in God's","A word for anyone who feels invisible: you are fully seen and known by God"]},
+
+  {n:"02",date:"18 Jul 2025",month:"July",year:"2025",
+   passage:"Luke 18:1–8",
+   title:"Keep Praying, Don't Give Up",
+   idea:"If even an unjust judge yields to persistence, how much more will a loving Father answer?",
+   verse:'"Then Jesus told his disciples a parable to show them that they should always pray and not give up. He said: \"In a certain town there was a judge who neither feared God nor cared what people thought. And there was a widow in that town who kept coming to him with the plea, \'Grant me justice against my adversary.\'\""… \"Will not God bring about justice for his chosen ones, who cry out to him day and night? Will he keep putting them off? I tell you, he will see that they get justice, and quickly.\""',
+   points:["The parable's purpose stated clearly: always pray and do not give up","The widow's persistence against an unjust judge — how much more with a loving God","Persistent prayer is not manipulating God; it is expressing deep, trusting faith"]},
+
+  {n:"01",date:"04 Jul 2025",month:"July",year:"2025",
+   passage:"Luke 15:11–32",
+   title:"The Prodigal Son",
+   idea:"The father ran before the apology was finished. That is the posture of God toward us.",
+   verse:'"There was a man who had two sons. The younger one said to his father, \'Father, give me my share of the estate.\' So he divided his property between them. Not long after that, the younger son got together all he had, set off for a distant country and there squandered his wealth in wild living… But while he was still a long way off, his father saw him and was filled with compassion for him; he ran to his son, threw his arms around him and kissed him. The father said to his servants, \'Bring the best robe and put it on him. Put a ring on his finger and sandals on his feet. Bring the fattened calf and kill it. Let\'s have a feast and celebrate. For this son of mine was dead and is alive again; he was lost and is found.\' … The older son became angry and refused to go in. His father went out and pleaded with him. But he answered, \'All these years I\'ve been slaving for you and never disobeyed your orders. Yet you never gave me even a young goat so I could celebrate with my friends.\' \'My son, you are always with me, and everything I have is yours. But we had to celebrate and be glad, because this brother of yours was dead and is alive again; he was lost and is found.\'"',
+   points:["In that culture, a dignified older man did not run — grace willingly loses dignity","The father interrupts the son's rehearsed speech: he is already welcomed, already loved","The older brother's anger reveals how self-righteousness is its own form of being lost"]},
+];
+
+// ── STATE ──
+let searchQ='', selYear='all', selMonth='all', openIdx=-1;
+
+// ── TOAST ──
+let toastT;
+function showToast(){
+  const el=document.getElementById('toast');
+  el.classList.add('show');
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>el.classList.remove('show'),2000);
+}
+
+// ── COPY ──
+function copyVerse(verse,btn){
+  const txt=verse.replace(/["""]/g,'').trim();
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(txt).then(()=>{
+      const orig=btn.textContent;
+      btn.textContent='✓ Copied!';
+      setTimeout(()=>btn.textContent=orig,1500);
+      showToast();
+    });
+  }
+}
+
+// ── EXPAND / COLLAPSE ──
+function toggle(idx){
+  const sessions=document.querySelectorAll('.session');
+  sessions.forEach((s,i)=>{
+    if(i===idx){
+      const isOpen=s.classList.contains('open');
+      s.classList.toggle('open',!isOpen);
+      openIdx=isOpen?-1:idx;
+    } else {
+      s.classList.remove('open');
+    }
+  });
+}
+function closeRow(idx){
+  document.querySelectorAll('.session')[idx]?.classList.remove('open');
+  if(openIdx===idx)openIdx=-1;
+}
+
+// ── FILTER ──
+function filtered(){
+  return DATA.filter(d=>{
+    const yOk=selYear==='all'||d.year===selYear;
+    const mOk=selMonth==='all'||d.month===selMonth;
+    const q=searchQ;
+    const sOk=!q||[d.title,d.passage,d.idea,d.verse,...d.points]
+      .join(' ').toLowerCase().includes(q);
+    return yOk&&mOk&&sOk;
+  });
+}
+
+// ── RENDER ──
+function rowHTML(d,localIdx){
+  const gi=DATA.indexOf(d);
+  return `<div class="session" id="sess${localIdx}">
+    <div class="session-row" onclick="toggle(${localIdx})">
+      <div class="col-date">${d.date}</div>
+      <div class="col-passage">${d.passage}</div>
+      <div class="col-title">${d.title}</div>
+      <div class="col-idea">${d.idea}</div>
+      <div class="col-toggle"><div class="toggle-icon">▾</div></div>
+    </div>
+    <div class="session-expand">
+      <div class="ex-inner">
+        <div>
+          <div class="ex-section-label">Full Bible Verse</div>
+          <div class="ex-verse">${d.verse}</div>
+        </div>
+        <div>
+          <div class="ex-section-label">Discussion Points</div>
+          <ul class="ex-points">
+            ${d.points.map(p=>`<li>${p}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+      <div class="ex-actions">
+        <button class="copy-btn" onclick="copyVerse(\`${d.verse.replace(/`/g,'\\`')}\`,this)">📋 Copy verse</button>
+        <button class="close-btn" onclick="closeRow(${localIdx})">Close ▴</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function render(){
+  const f=filtered();
+  const list=document.getElementById('list');
+  if(!f.length){
+    list.innerHTML=`<div class="empty-row">
+      📖 No sessions match your filter.<p>Try clearing the search or selecting a different year/month.</p>
+    </div>`;
+  } else {
+    list.innerHTML=f.map((d,i)=>rowHTML(d,i)).join('');
+  }
+  const n=f.length, tot=DATA.length;
+  document.getElementById('js-count').innerHTML=
+    `<strong>${n}</strong> ${n===1?'session':'sessions'}${n<tot?' of <strong>'+tot+'</strong> total':''}`;
+  const el=document.getElementById('js-total'); if(el) el.textContent=tot;
+}
+
+function clearFilters(){
+  document.getElementById('search').value='';
+  document.getElementById('sel-year').value='all';
+  document.getElementById('sel-month').value='all';
+  searchQ='';selYear='all';selMonth='all';
+  render();
+}
+
+// ── EVENTS ──
+document.getElementById('search').addEventListener('input',e=>{
+  searchQ=e.target.value.trim().toLowerCase();render();});
+document.getElementById('sel-year').addEventListener('change',e=>{
+  selYear=e.target.value;render();});
+document.getElementById('sel-month').addEventListener('change',e=>{
+  selMonth=e.target.value;render();});
+
+// ── INIT ──
+render();
+</script>
+</body>
+</html>
